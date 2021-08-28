@@ -28,6 +28,9 @@ sqlite-prepare:
 key:
 	php artisan key:generate
 
+test:
+	php artisan test
+
 ide-helper:
 	php artisan ide-helper:eloquent
 	php artisan ide-helper:gen

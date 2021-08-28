@@ -16,12 +16,16 @@ class RoleSeeder extends Seeder
     {
         $roles = [
             [
-                'id'    => 1,
+                'id'    => config('role.id.admin'),
                 'name' => 'admin',
             ],
             [
-                'id'    => 2,
+                'id'    => config('role.id.user'),
                 'name' => 'user',
+            ],
+            [
+                'id'    => config('role.id.banned'),
+                'name' => 'banned',
             ],
         ];
 

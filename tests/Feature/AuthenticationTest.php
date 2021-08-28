@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Role;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -10,6 +11,7 @@ use Tests\TestCase;
 class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
+
 
     public function test_login_screen_can_be_rendered()
     {
@@ -38,6 +40,29 @@ class AuthenticationTest extends TestCase
         $this->post('/login', [
             'email' => $user->email,
             'password' => 'wrong-password',
+        ]);
+
+        $this->assertGuest();
+    }
+
+    public function test_users_can_not_authenticate_with_ban_role()
+    {
+        $this->seed();
+
+        $user = User::factory()->create();
+
+        $role = Role::find(config('role.id.banned'));
+
+        if(!$role) {
+            abort();
+        }
+
+        $user->role()->associate($role);
+        $user->save();
+
+        $response = $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'password',
         ]);
 
         $this->assertGuest();
